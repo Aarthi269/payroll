@@ -58,10 +58,7 @@ const data = {
 };
 
 export default function SalaryChart() {
-  const [showSalaryTable, setShowSalaryTable] = useState(false);
-  const [showTaxTable, setShowTaxTable] = useState(false);
-  const [showPayslipTable, setShowPayslipTable] = useState(false);
-  const [showPayrollTable, setShowPayrollTable] = useState(false);
+  const [showAllTables, setShowAllTables] = useState(true);
 
   return (
     <>
@@ -135,56 +132,21 @@ export default function SalaryChart() {
         </div>
       </div>
 
-      <div className="bg-[#f9fafe] rounded-lg p-4 mb-6 flex space-x-8 text-sm font-medium">
-        <button
-          onClick={() => setShowSalaryTable(!showSalaryTable)}
-          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
-        >
-          Salary Breakdown
-        </button>
-        <button
-          onClick={() => setShowTaxTable(!showTaxTable)}
-          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
-        >
-          Tax Definitions
-        </button>
-        <button
-          onClick={() => setShowPayslipTable(!showPayslipTable)}
-          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
-        >
-          Payslips
-        </button>
-        <button
-          onClick={() => setShowPayrollTable(!showPayrollTable)}
-          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
-        >
-          Payroll
-        </button>
-      </div>
-
-      {showSalaryTable && (
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <SalaryTable />
-        
-        </div>
-      )}
-      {showTaxTable && (
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          
-          <TaxTable />
-        </div>
-      )}
-      {showPayslipTable && (
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          
-          <PayslipTable />
-        </div>
-      )}
-      {showPayrollTable && (
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          
-          <PayrollTable />
-        </div>
+      {showAllTables && (
+        <>
+          <div className="bg-white p-4 rounded-lg shadow-sm border mt-6">
+            <SalaryTable />
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm border mt-6">
+            <TaxTable />
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm border mt-6">
+            <PayslipTable />
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm border mt-6">
+            <PayrollTable />
+          </div>
+        </>
       )}
     </>
   );
