@@ -1,0 +1,191 @@
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { useState } from 'react';
+import SalaryTable from './SalaryTable';
+import { FiDatabase } from 'react-icons/fi';
+import { BsArrowUp, BsArrowDown } from 'react-icons/bs';
+import TaxTable from './TaxTable';
+import PayslipTable from './PayslipTable';
+import PayrollTable from './PayrollTable';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const labels = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
+
+const data = {
+  labels,
+  datasets: [
+    {
+      label: 'Net Salary',
+      data: [300000, 350000, 370000, 380000, 390000, 400000, 410000, 420000, 430000, 440000, 450000, 460000],
+      backgroundColor: '#3B82F6', // blue
+      stack: 'combined',
+      barThickness: 10, 
+    },
+    {
+      label: 'Loan',
+      data: [20000, 19000, 22500, 28000, 37500, 17000, 26500, 30000, 25500, 35000, 24500, 14000],
+
+      backgroundColor: '#A855F7', // purple
+      stack: 'combined',
+      barThickness: 10, 
+    },
+    {
+      label: 'Tax',
+      data: [40000, 45000, 47000, 49000, 51000, 50000, 48000, 47000, 46000, 45000, 44000, 43000],
+      backgroundColor: '#F59E0B', // orange
+      stack: 'combined',
+      barThickness: 10, 
+      borderRadius: {
+        topLeft: 10,
+        topRight: 10,
+        bottomLeft: 0,
+        bottomRight: 0,
+      },
+    },
+  ],
+};
+
+export default function SalaryChart() {
+  const [showSalaryTable, setShowSalaryTable] = useState(false);
+  const [showTaxTable, setShowTaxTable] = useState(false);
+  const [showPayslipTable, setShowPayslipTable] = useState(false);
+  const [showPayrollTable, setShowPayrollTable] = useState(false);
+
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-white p-4 rounded-lg shadow-sm relative">
+            <div className="absolute top-4 right-4 bg-yellow-100 p-2 rounded-full">
+              <FiDatabase className="text-yellow-500" />
+            </div>
+            <h4 className="text-lg font-semibold">5,205,350.00</h4>
+            <p className="text-sm text-gray-500">Gross salary this month</p>
+            <p className="text-green-500 text-xs flex items-center">
+              <BsArrowUp className="mr-1" /> 2% more than last month
+            </p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm relative">
+            <div className="absolute top-4 right-4 bg-blue-100 p-2 rounded-full">
+              <FiDatabase className="text-blue-500" />
+            </div>
+            <h4 className="text-lg font-semibold">4,550,350.00</h4>
+            <p className="text-sm text-gray-500">Net salary this month</p>
+            <p className="text-green-500 text-xs flex items-center">
+              <BsArrowUp className="mr-1" /> 2.1% more than last month
+            </p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm relative">
+            <div className="absolute top-4 right-4 bg-orange-100 p-2 rounded-full">
+              <FiDatabase className="text-orange-500" />
+            </div>
+            <h4 className="text-lg font-semibold">550,350.00</h4>
+            <p className="text-sm text-gray-500">Total tax this month</p>
+            <p className="text-red-500 text-xs flex items-center">
+              <BsArrowDown className="mr-1" /> 2.1% less than last month
+            </p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm relative">
+            <div className="absolute top-4 right-4 bg-purple-100 p-2 rounded-full">
+              <FiDatabase className="text-purple-500" />
+            </div>
+            <h4 className="text-lg font-semibold">150,350.00</h4>
+            <p className="text-sm text-gray-500">Total loan this month</p>
+            <p className="text-red-500 text-xs flex items-center">
+              <BsArrowDown className="mr-1" /> 1.5% less than last month
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <h3 className="text-lg font-semibold mb-4">Annual payroll summary</h3>
+          <Bar
+            options={{
+              responsive: true,
+              plugins: {
+                legend: { position: 'top' },
+              },
+              scales: {
+                x: {
+                  stacked: true,
+                },
+                y: {
+                  stacked: true,
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (value) => `${value / 1000}k`,
+                  },
+                },
+              },
+            }}
+            data={data}
+          />
+        </div>
+      </div>
+
+      <div className="bg-[#f9fafe] rounded-lg p-4 mb-6 flex space-x-8 text-sm font-medium">
+        <button
+          onClick={() => setShowSalaryTable(!showSalaryTable)}
+          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
+        >
+          Salary Breakdown
+        </button>
+        <button
+          onClick={() => setShowTaxTable(!showTaxTable)}
+          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
+        >
+          Tax Definitions
+        </button>
+        <button
+          onClick={() => setShowPayslipTable(!showPayslipTable)}
+          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
+        >
+          Payslips
+        </button>
+        <button
+          onClick={() => setShowPayrollTable(!showPayrollTable)}
+          className="text-blue-600 border-b-2 hover:brightness-150 cursor-pointer border-blue-600 pb-1"
+        >
+          Payroll
+        </button>
+      </div>
+
+      {showSalaryTable && (
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <SalaryTable />
+        
+        </div>
+      )}
+      {showTaxTable && (
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          
+          <TaxTable />
+        </div>
+      )}
+      {showPayslipTable && (
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          
+          <PayslipTable />
+        </div>
+      )}
+      {showPayrollTable && (
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          
+          <PayrollTable />
+        </div>
+      )}
+    </>
+  );
+}
